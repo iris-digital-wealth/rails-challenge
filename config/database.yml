@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  database: <%= ENV['POSTGRES_DB'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  schema_search_path: "public,shared_extensions"
+
+development:
+  <<: *default
+  database: rails_challenge_development
+
+test:
+  <<: *default
+  database: rails_challenge_test
+
+production:
+  <<: *default
+  database: rails_challenge_production
+  username: rails_challenge
+  password: <%= ENV['RAILS_CHALLENGE_DATABASE_PASSWORD'] %>

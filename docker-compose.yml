@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  railsapp:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - bundle:/bundle
+    env_file:
+      - .environments/development/web
+      - .environments/development/database
+    tty: true
+    environment:
+      - BUNDLE_PATH=/bundle
+
+  database:
+    image: postgres
+    env_file:
+      - .environments/development/database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  bundle:
+  db_data:
